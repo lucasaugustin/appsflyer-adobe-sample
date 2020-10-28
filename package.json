@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@adobe/react-native-acpcore": "1.2.1",
     "react": "16.9.0",
     "react-native": "0.61.5"
   },
