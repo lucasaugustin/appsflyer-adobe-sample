@@ -4,7 +4,7 @@ import {
   View,
   Text,
   StatusBar,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 
 import {
@@ -15,20 +15,45 @@ import {
   ACPMobileLogLevel,
 } from '@adobe/react-native-acpcore'
 
+import appsFlyer from 'react-native-appsflyer';
+
+import { keys } from './keys'
+
+
 const { width,height } = Dimensions.get('window')
 
 const initAdobe = () => {
   ACPCore.setLogLevel(ACPMobileLogLevel.VERBOSE)
-  ACPCore.configureWithAppId('')
+  ACPCore.configureWithAppId(keys.adobeAppID)
   ACPLifecycle.registerExtension()
   ACPIdentity.registerExtension()
   ACPSignal.registerExtension()
   ACPCore.start()
 }
 
-const App = () => {
-  useEffect(initAdobe, [])
+const initAppsFlyer = () => {
+  appsFlyer.initSdk(
+    {
+      devKey: keys.appsFlyerKey,
+      isDebug: true,
+      appId: keys.appsFlyerAppID,
+      onInstallConversionDataListener: true,
+    },
+    (result) => {
+      console.log(result);
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+}
 
+const App = () => {
+  useEffect(() => {
+    initAdobe()
+    initAppsFlyer()
+  }, [])
+  
   return (
     <>
       <StatusBar barStyle="dark-content" />
